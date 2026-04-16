@@ -37,30 +37,45 @@ test('Verify text present inside field matches expected value', async({page}) =>
     expect(page.getByTestId('input-verify-text')).toHaveValue('QA PlayGround');
 });
 
-// test('Verify getAttribute return the correct input value', async({page}) => {
+test('Verify getAttribute return the correct input value', async({page}) => {
+    await page.goto('https://www.qaplayground.com/practice/input-fields');
+    expect(page.getByTestId('input-verify-text')).toHaveAttribute('value', 'QA PlayGround');
 
-// });
+});
 
-// test('Verify input field text can be cleared successfully', async({page}) => {
+test('Verify input field text can be cleared successfully', async({page}) => {
+    await page.goto('https://www.qaplayground.com/practice/input-fields');
+    expect(page.getByTestId('input-clear-text')).toHaveValue('QA PlayGround Clear Me');
+    await (page.getByTestId('input-clear-text')).fill('');
+    expect(page.getByTestId('input-clear-text')).toBeEmpty();
+});
 
-// });
+test('Verify field is empty after executing clear action', async({page}) => {
+    await page.goto('https://www.qaplayground.com/practice/input-fields');
+    expect(page.getByTestId('input-clear-text')).toHaveValue('QA PlayGround Clear Me');
+    await (page.getByTestId('input-clear-text')).fill('');
+    expect(page.getByTestId('input-clear-text')).toHaveValue('');
+});
 
-// test('Verify field is empty after executing clear action', async({page}) => {
+test('Verify disabled input field cannot be edited by user', async({page}) => {
+    await page.goto('https://www.qaplayground.com/practice/input-fields');
+    expect(page.getByTestId('input-disabled')).toHaveAttribute('disabled');
+    await expect(page.getByTestId('input-disabled').fill('Trying to type', { timeout: 1000 }))
+    .rejects.toThrow();
+});
 
-// });
+test('Verify isEnabled() return false for disabled input', async({page}) => {
+    await page.goto('https://www.qaplayground.com/practice/input-fields');
+    expect(page.getByTestId('input-disabled')).toBeDisabled();
+});
 
-// test('Verify disabled input field cannot be edited by user', async({page}) => {
+test('Verify readonly input field does not accept user typing', async({page}) => {
+    await page.goto('https://www.qaplayground.com/practice/input-fields');
+    await page.getByTestId('input-readonly').fill('Trying to type', { force: true });
+    expect(page.getByTestId('input-readonly')).toHaveValue('This text is readonly');
+});
 
-// });
-
-// test('Verify isEnabled() return false for disabled input', async({page}) => {
-
-// });
-
-// test('Verify readonly input field does not accept user typing', async({page}) => {
-
-// });
-
-// test('Verify getAttribute returns correct readonly attribute value', async({page}) => {
-
-// });
+test('Verify getAttribute returns correct readonly attribute value', async({page}) => {
+    await page.goto('https://www.qaplayground.com/practice/input-fields');
+    expect(page.getByTestId('input-readonly')).toHaveAttribute('readonly');
+});

@@ -38,6 +38,17 @@ export class InputFieldsPage {
         await this.appendTextInput.pressSequentially(text);
     }
 
+    async clearTextField() {
+        await this.clearTextInput.fill('');
+    }
+
+    async tryToFillDisabledInput(value: string, timeout = 1000) {
+        await this.disabledInput.fill(value, { timeout });
+    }
+
+    async tryToFillReadonlyInput(value: string) {
+        await this.disabledInput.fill(value, { force: true });
+    }
     async tabToNextField() {
         await this.page.keyboard.press('Tab');
     }

@@ -49,41 +49,61 @@ test('Verify appended text value is retained in the field', async({page}) => {
 });
 
 test('Verify text present inside field matches expected value', async({page}) => {
-    expect(page.getByTestId('input-verify-text')).toHaveValue('QA PlayGround');
+    const inputFieldsPage = new InputFieldsPage(page);
+    
+    await expect(inputFieldsPage.verifyTextInput).toHaveValue('QA PlayGround');
 });
 
 test('Verify getAttribute return the correct input value', async({page}) => {
-    expect(page.getByTestId('input-verify-text')).toHaveAttribute('value', 'QA PlayGround');
-
+    const inputFieldsPage = new InputFieldsPage(page);
+    
+    await expect(inputFieldsPage.verifyTextInput).toHaveAttribute('value', 'QA PlayGround');
 });
 
 test('Verify input field text can be cleared successfully', async({page}) => {
-    expect(page.getByTestId('input-clear-text')).toHaveValue('QA PlayGround Clear Me');
-    await (page.getByTestId('input-clear-text')).fill('');
-    expect(page.getByTestId('input-clear-text')).toBeEmpty();
+    const inputFieldsPage = new InputFieldsPage(page);
+    
+    await expect(inputFieldsPage.clearTextInput).toHaveValue('QA PlayGround Clear Me');
+
+    await inputFieldsPage.clearTextField();
+    
+    await expect(inputFieldsPage.clearTextInput).toBeEmpty();
 });
 
 test('Verify field is empty after executing clear action', async({page}) => {
-    expect(page.getByTestId('input-clear-text')).toHaveValue('QA PlayGround Clear Me');
-    await (page.getByTestId('input-clear-text')).fill('');
-    expect(page.getByTestId('input-clear-text')).toHaveValue('');
+    const inputFieldsPage = new InputFieldsPage(page);
+    
+    await expect(inputFieldsPage.clearTextInput).toHaveValue('QA PlayGround Clear Me');
+
+    await inputFieldsPage.clearTextField();
+    
+    await expect(inputFieldsPage.clearTextInput).toHaveValue('');
 });
 
 test('Verify disabled input field cannot be edited by user', async({page}) => {
-    expect(page.getByTestId('input-disabled')).toHaveAttribute('disabled');
-    await expect(page.getByTestId('input-disabled').fill('Trying to type', { timeout: 1000 }))
-    .rejects.toThrow();
+    const inputFieldsPage = new InputFieldsPage(page);
+    
+    await expect(inputFieldsPage.disabledInput).toHaveAttribute('disabled');
+
+    await expect(inputFieldsPage.tryToFillDisabledInput).rejects.toThrow();
 });
 
 test('Verify isEnabled() return false for disabled input', async({page}) => {
-    expect(page.getByTestId('input-disabled')).toBeDisabled();
+    const inputFieldsPage = new InputFieldsPage(page);
+    
+    await expect(inputFieldsPage.disabledInput).toBeDisabled();
 });
 
 test('Verify readonly input field does not accept user typing', async({page}) => {
-    await page.getByTestId('input-readonly').fill('Trying to type', { force: true });
-    expect(page.getByTestId('input-readonly')).toHaveValue('This text is readonly');
+    const inputFieldsPage = new InputFieldsPage(page);
+    
+    await inputFieldsPage.tryToFillReadonlyInput('Trying to type');
+
+    expect(inputFieldsPage.readonlyInput).toHaveValue('This text is readonly');
 });
 
 test('Verify getAttribute returns correct readonly attribute value', async({page}) => {
-    expect(page.getByTestId('input-readonly')).toHaveAttribute('readonly');
+     const inputFieldsPage = new InputFieldsPage(page);
+    
+    await expect(inputFieldsPage.readonlyInput).toHaveAttribute('readonly');
 });

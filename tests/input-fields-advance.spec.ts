@@ -35,7 +35,7 @@ test('Verify keyboard tab triggers focus change after append', async({page}) => 
     
     await inputFieldsPage.tabToNextField();
     
-    expect(inputFieldsPage.verifyTextInput).toBeFocused();
+    await expect(inputFieldsPage.verifyTextInput).toBeFocused();
 });
 
 test('Verify appended text value is retained in the field', async({page}) => {
@@ -99,11 +99,11 @@ test('Verify readonly input field does not accept user typing', async({page}) =>
     
     await inputFieldsPage.tryToFillReadonlyInput('Trying to type');
 
-    expect(inputFieldsPage.readonlyInput).toHaveValue('This text is readonly');
+    await expect(inputFieldsPage.readonlyInput).toHaveValue('This text is readonly');
 });
 
 test('Verify getAttribute returns correct readonly attribute value', async({page}) => {
-     const inputFieldsPage = new InputFieldsPage(page);
+    const inputFieldsPage = new InputFieldsPage(page);
     
     await expect(inputFieldsPage.readonlyInput).toHaveAttribute('readonly');
 });

@@ -47,7 +47,7 @@ export class InputFieldsPage {
     }
 
     async tryToFillReadonlyInput(value: string) {
-        await this.disabledInput.fill(value, { force: true });
+        await this.readonlyInput.fill(value, { force: true });
     }
     async tabToNextField() {
         await this.page.keyboard.press('Tab');

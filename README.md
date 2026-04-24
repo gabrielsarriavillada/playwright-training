@@ -62,7 +62,7 @@ This demonstrates the evolution from basic Playwright usage to a more scalable a
 git clone https://github.com/gabrielsarriavillada/playwright-training.git
 cd playwright-training
 npm ci
-npx playwright install --with-deps
+npm run install:browsers
 ```
 > Requires Node.js 18+
 
@@ -74,7 +74,11 @@ npx playwright install --with-deps
 npm test                # run all tests
 npm run test:headed     # run with browser UI
 npm run test:ui         # Playwright UI mode
-npm run report          # open HTML report
+npm run test:debug      # run on debug mode
+npm run test:chromium   # run on chromium browser
+npm run test:firefox    # run on firefox browser
+npm run test:webkit     # run on webkit browser
+npm run test:smoke      # run smoke test suite
 ```
 
 ---
@@ -84,7 +88,7 @@ npm run report          # open HTML report
 After running tests:
 
 ```bash
-npm run report
+npm run test:report
 ```
 
 ---

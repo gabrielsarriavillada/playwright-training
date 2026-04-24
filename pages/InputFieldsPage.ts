@@ -21,7 +21,7 @@ export class InputFieldsPage {
     }
 
     async open() {
-        await this.page.goto('https://www.qaplayground.com/practice/input-fields');
+        await this.page.goto('/practice/input-fields');
     }
 
     async fillMovieName(movieName: string) {

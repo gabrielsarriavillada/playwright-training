@@ -1,0 +1,117 @@
+import type { Page, Locator } from '@playwright/test';
+
+type Gender = 'male' | 'female' | 'other';
+
+export class FormsPage {
+    readonly page: Page;
+
+    // Form field locators
+    readonly firstNameInput: Locator;
+    readonly lastNameInput: Locator;
+    readonly emailInput: Locator;
+    readonly phoneInput: Locator;
+    readonly dobInput: Locator;
+    readonly genderMaleRadio: Locator;
+    readonly genderFemaleRadio: Locator;
+    readonly genderOtherRadio: Locator;
+    readonly countryDropdown: Locator;
+    readonly cityInput: Locator;
+    readonly passwordInput: Locator;
+    readonly confirmPasswordInput: Locator;
+    readonly termsCheckbox: Locator;
+    readonly submitFormButton: Locator;
+
+    // Form success locators
+    readonly formSuccessMessage: Locator;
+
+    // Error field locators
+    readonly firstNameError: Locator;
+    readonly lastNameError: Locator;
+    readonly emailError: Locator;
+    readonly phoneError: Locator;
+    readonly dobError: Locator;
+    readonly genderError: Locator;
+    readonly countryError: Locator;
+    readonly cityError: Locator;
+    readonly passwordError: Locator;
+    readonly confirmPasswordError: Locator;
+    readonly termsError: Locator;
+
+    constructor(page: Page) {
+        this.page = page;
+        this.firstNameInput = page.getByTestId('input-first-name');
+        this.lastNameInput = page.getByTestId('input-last-name');
+        this.emailInput = page.getByTestId('input-email');
+        this.phoneInput = page.getByTestId('input-phone');
+        this.dobInput = page.getByTestId('input-dob');
+        this.genderMaleRadio = page.getByTestId('radio-gender-male');
+        this.genderFemaleRadio = page.getByTestId('radio-gender-female');
+        this.genderOtherRadio = page.getByTestId('radio-gender-other');
+        this.countryDropdown = page.getByTestId('select-country');
+        this.cityInput = page.getByTestId('input-city');
+        this.passwordInput = page.getByTestId('input-password');
+        this.confirmPasswordInput = page.getByTestId('input-confirm-password');
+        this.termsCheckbox = page.getByTestId('checkbox-terms');
+        this.submitFormButton = page.getByTestId('submit-form-btn');
+        this.formSuccessMessage = page.getByTestId('form-success-msg');
+        this.firstNameError = page.getByTestId('error-first-name');
+        this.lastNameError = page.getByTestId('error-last-name');
+        this.emailError = page.getByTestId('error-email');
+        this.phoneError = page.getByTestId('error-phone');
+        this.dobError = page.getByTestId('error-dob');
+        this.genderError = page.getByTestId('error-gender');
+        this.countryError = page.getByTestId('error-country');
+        this.cityError = page.getByTestId('error-city');
+        this.passwordError = page.getByTestId('error-password');
+        this.confirmPasswordError = page.getByTestId('error-confirm-password');
+        this.termsError = page.getByTestId('error-terms');
+    }
+
+    async open() {
+        await this.page.goto('/practice/forms');
+    }
+
+    async fillPersonalDetails(data: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        dob: string;
+        gender: Gender;
+    }) {
+        await this.firstNameInput.fill(data.firstName);
+        await this.lastNameInput.fill(data.lastName);
+        await this.emailInput.fill(data.email);
+        await this.phoneInput.fill(data.phone);
+        await this.dobInput.fill(data.dob);
+
+        const genderRadio = {
+            male: this.genderMaleRadio,
+            female: this.genderFemaleRadio,
+            other: this.genderOtherRadio,
+        }[data.gender];
+        await genderRadio.check();
+    }
+
+    async fillAddress(data: {
+        country: string,
+        city: string
+    }) {
+        await this.countryDropdown.click();
+        await this.page.getByRole('option', { name: data.country }).click();
+        await this.cityInput.fill(data.city);
+    }
+
+    async fillAccountDetails(password: string) {
+        await this.passwordInput.fill(password);
+        await this.confirmPasswordInput.fill(password);
+    }
+
+    async acceptTerms() {
+        await this.termsCheckbox.check();
+    }
+
+    async submitForm() {
+        await this.submitFormButton.click();
+    }
+}

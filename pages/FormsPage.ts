@@ -20,9 +20,11 @@ export class FormsPage {
     readonly confirmPasswordInput: Locator;
     readonly termsCheckbox: Locator;
     readonly submitFormButton: Locator;
+    readonly resetFormButton: Locator;
 
     // Form success locators
     readonly formSuccessMessage: Locator;
+    readonly formSubmittedName: Locator;
 
     // Error field locators
     readonly firstNameError: Locator;
@@ -53,7 +55,9 @@ export class FormsPage {
         this.confirmPasswordInput = page.getByTestId('input-confirm-password');
         this.termsCheckbox = page.getByTestId('checkbox-terms');
         this.submitFormButton = page.getByTestId('submit-form-btn');
+        this.resetFormButton = page.getByTestId('reset-form-btn');
         this.formSuccessMessage = page.getByTestId('form-success-msg');
+        this.formSubmittedName = page.getByTestId('submitted-name');
         this.firstNameError = page.getByTestId('error-first-name');
         this.lastNameError = page.getByTestId('error-last-name');
         this.emailError = page.getByTestId('error-email');
@@ -102,9 +106,39 @@ export class FormsPage {
         await this.cityInput.fill(data.city);
     }
 
-    async fillAccountDetails(password: string) {
+    async fillAccountDetails(password: string, confirmPassword?: string) {
         await this.passwordInput.fill(password);
-        await this.confirmPasswordInput.fill(password);
+        await this.confirmPasswordInput.fill(confirmPassword ? confirmPassword : password);
+    }
+
+    async fillFirstName(firstName: string) {
+        await this.firstNameInput.fill(firstName);
+    }
+
+    async fillEmail(email: string) {
+        await this.emailInput.fill(email);
+    }
+
+    async fillPhone(phone: string) {
+        await this.phoneInput.fill(phone);
+    }
+
+    async selectGender(gender: Gender) {
+        const genderRadio = {
+            male: this.genderMaleRadio,
+            female: this.genderFemaleRadio,
+            other: this.genderOtherRadio,
+        }[gender];
+        await genderRadio.check();
+    }
+
+    async selectCountry(country: string) {
+        await this.countryDropdown.click();
+        await this.page.getByRole('option', { name: country }).click();
+    }
+
+    async fillPassword(password: string) {
+        await this.passwordInput.fill(password);
     }
 
     async acceptTerms() {
@@ -113,5 +147,9 @@ export class FormsPage {
 
     async submitForm() {
         await this.submitFormButton.click();
+    }
+
+    async resetForm() {
+        await this.resetFormButton.click();
     }
 }

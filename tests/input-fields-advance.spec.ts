@@ -85,7 +85,7 @@ test('Verify disabled input field cannot be edited by user', async({page}) => {
     
     await expect(inputFieldsPage.disabledInput).toHaveAttribute('disabled');
 
-    await expect(inputFieldsPage.tryToFillDisabledInput).rejects.toThrow();
+    await expect(inputFieldsPage.tryToFillDisabledInput('Trying to type')).rejects.toThrow();
 });
 
 test('Verify isEnabled() return false for disabled input', async({page}) => {

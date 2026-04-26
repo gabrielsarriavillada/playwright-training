@@ -159,9 +159,9 @@ test('Verify gender radio button selection', async({page}) => {
 
     await formsPage.selectGender('female');
 
-    await expect (await formsPage.genderFemaleRadio.isChecked()).toBeTruthy();
-    await expect (await formsPage.genderMaleRadio.isChecked()).toBeFalsy();
-    await expect (await formsPage.genderOtherRadio.isChecked()).toBeFalsy()
+    await expect(formsPage.genderFemaleRadio).toBeChecked();
+    await expect(formsPage.genderMaleRadio).not.toBeChecked();
+    await expect(formsPage.genderOtherRadio).not.toBeChecked();
 });
 
 test('Verify country dropdown selection', async({page}) => {

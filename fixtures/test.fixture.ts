@@ -1,15 +1,19 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { InputFieldsPage } from '../pages/InputFieldsPage';
+import { FormsPage } from '../pages/FormsPage';
 
-type MyFixtures = {
+type Pages = {
     inputFieldsPage: InputFieldsPage;
+    formsPage: FormsPage
 };
 
-export const test = base.extend<MyFixtures>({
+export const test = base.extend<Pages>({
     inputFieldsPage: async ({ page }, use) => {
-        const inputPage = new InputFieldsPage(page);
-        await use(inputPage);
+        await use(new InputFieldsPage(page));
+    },
+    formsPage: async ({ page }, use) => {
+        await use(new FormsPage(page));
     },
 });
 
-export { expect } from '@playwright/test';
+export { expect };

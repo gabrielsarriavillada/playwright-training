@@ -1,9 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { FormsPage } from '../pages/FormsPage';
+import { test, expect } from '../fixtures/test.fixture';
 
 let consoleErrors: string[];
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, formsPage }) => {
     consoleErrors = [];
 
     page.on('console', (msg) => {
@@ -12,15 +11,12 @@ test.beforeEach(async ({ page }) => {
         }
     });
 
-    const formsPage = new FormsPage(page);
-    const response = await formsPage.open();
+   const response = await formsPage.open();
 
     expect(response?.status()).toBe(200);
 });
 
-test('Fill all fields with valid data and submit successfully', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Fill all fields with valid data and submit successfully', async ({ formsPage }) => {
     await formsPage.fillPersonalDetails({
         firstName: 'John',
         lastName: 'Doe',
@@ -44,9 +40,7 @@ test('Fill all fields with valid data and submit successfully', async({page}) =>
     await expect(formsPage.formSuccessMessage).toBeVisible();
 });
 
-test('Verify required field errors appear on empty submit', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify required field errors appear on empty submit', async ({ formsPage }) => {
     await formsPage.submitForm();
 
     await expect(formsPage.firstNameError).toHaveText('First name is required.');
@@ -62,45 +56,35 @@ test('Verify required field errors appear on empty submit', async({page}) => {
     await expect(formsPage.termsError).toHaveText('You must accept the terms.');
 });
 
-test('Verify invalid email format shows validation error', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify invalid email format shows validation error', async ({ formsPage }) => {
     await formsPage.fillEmail('notanemail');
     await formsPage.submitForm();
 
     await expect(formsPage.emailError).toHaveText('Enter a valid email address.');
 });
 
-test('Verify invalid phone number format shows error', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify invalid phone number format shows error', async ({ formsPage }) => {
     await formsPage.fillPhone('12345');
     await formsPage.submitForm();
 
     await expect(formsPage.phoneError).toHaveText('Enter a valid 10-digit phone number.');
 });
 
-test('Verify password minimum length validation', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify password minimum length validation', async ({ formsPage }) => {
     await formsPage.fillPassword('abc');
     await formsPage.submitForm();
 
     await expect(formsPage.passwordError).toHaveText('Password must be at least 6 characters.');
 });
 
-test('Verify password mismatch shows confirm password error', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify password mismatch shows confirm password error', async ({ formsPage }) => {
     await formsPage.fillAccountDetails('pass123', 'pass456');
     await formsPage.submitForm();
 
     await expect(formsPage.confirmPasswordError).toHaveText('Passwords do not match.');
 });
 
-test('Verify T&C checkbox required error appears', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify T&C checkbox required error appears', async ({ formsPage }) => {
     await formsPage.fillPersonalDetails({
         firstName: 'John',
         lastName: 'Doe',
@@ -122,8 +106,7 @@ test('Verify T&C checkbox required error appears', async({page}) => {
     await expect(formsPage.termsError).toHaveText('You must accept the terms.');
 });
 
-test('Verify success message displays submitted name', async({page}) => {
-    const formsPage = new FormsPage(page);
+test('Verify success message displays submitted name', async ({ formsPage }) => {
     const firstName = 'Jane';
     const lastName = 'Smith';
 
@@ -151,9 +134,7 @@ test('Verify success message displays submitted name', async({page}) => {
     await expect(formsPage.formSubmittedName).toContainText(`${firstName} ${lastName}`);
 });
 
-test('Verify reset button clears all fields', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify reset button clears all fields', async ({ formsPage }) => {
     await formsPage.fillFirstName('John');
 
     await formsPage.fillEmail('john@example.com');
@@ -166,9 +147,7 @@ test('Verify reset button clears all fields', async({page}) => {
     await expect(formsPage.emailError).toBeHidden();
 });
 
-test('Verify gender radio button selection', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify gender radio button selection', async ({ formsPage }) => {
     await formsPage.selectGender('female');
 
     await expect(formsPage.genderFemaleRadio).toBeChecked();
@@ -176,8 +155,7 @@ test('Verify gender radio button selection', async({page}) => {
     await expect(formsPage.genderOtherRadio).not.toBeChecked();
 });
 
-test('Verify country dropdown selection', async({page}) => {
-    const formsPage = new FormsPage(page);
+test('Verify country dropdown selection', async ({ formsPage }) => {
     const country = 'USA';
 
     await formsPage.selectCountry(country);
@@ -185,9 +163,7 @@ test('Verify country dropdown selection', async({page}) => {
     await expect(formsPage.countryDropdown).toHaveText(country);
 });
 
-test('Verify multiple interest checkboxes can be selected', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify multiple interest checkboxes can be selected', async ({ formsPage }) => {
     await formsPage.checkSeleniumInterests();
     await formsPage.checkPlaywrightInterests();
 
@@ -198,8 +174,7 @@ test('Verify multiple interest checkboxes can be selected', async({page}) => {
     await expect(formsPage.jestCheckbox).not.toBeChecked();
 });
 
-test('Verify form fields retain values after validation failure', async({page}) => {
-    const formsPage = new FormsPage(page);
+test('Verify form fields retain values after validation failure', async ({ formsPage }) => {
     const firstName = 'John';
     const email = 'john@example.com';
 
@@ -213,9 +188,7 @@ test('Verify form fields retain values after validation failure', async({page}) 
     await expect(formsPage.emailInput).toHaveValue(email);
 });
 
-test('Verify Fill Again button returns to empty form from success state', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify Fill Again button returns to empty form from success state', async ({ formsPage }) => {
     await formsPage.fillPersonalDetails({
         firstName: 'John',
         lastName: 'Doe',
@@ -251,9 +224,7 @@ test('Verify Fill Again button returns to empty form from success state', async(
     await expect(formsPage.confirmPasswordInput).toHaveValue('');
 });
 
-test('Verify form page loads without errors', async({page}) => {
-    const formsPage = new FormsPage(page);
-
+test('Verify form page loads without errors', async ({ formsPage }) => {
     expect(consoleErrors).toEqual([]);
 
     await expect(formsPage.registrationForm).toBeVisible();

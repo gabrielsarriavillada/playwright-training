@@ -6,6 +6,7 @@ export class FormsPage {
     readonly page: Page;
 
     // Form field locators
+    readonly registrationForm: Locator;
     readonly firstNameInput: Locator;
     readonly lastNameInput: Locator;
     readonly emailInput: Locator;
@@ -18,6 +19,11 @@ export class FormsPage {
     readonly cityInput: Locator;
     readonly passwordInput: Locator;
     readonly confirmPasswordInput: Locator;
+    readonly seleniumCheckbox: Locator;
+    readonly playwrightCheckbox: Locator;
+    readonly cypressCheckbox: Locator;
+    readonly appiumCheckbox: Locator;
+    readonly jestCheckbox: Locator;
     readonly termsCheckbox: Locator;
     readonly submitFormButton: Locator;
     readonly resetFormButton: Locator;
@@ -25,6 +31,7 @@ export class FormsPage {
     // Form success locators
     readonly formSuccessMessage: Locator;
     readonly formSubmittedName: Locator;
+    readonly fillAgainButton: Locator;
 
     // Error field locators
     readonly firstNameError: Locator;
@@ -41,6 +48,7 @@ export class FormsPage {
 
     constructor(page: Page) {
         this.page = page;
+        this.registrationForm = page.getByTestId('user-registration-form')
         this.firstNameInput = page.getByTestId('input-first-name');
         this.lastNameInput = page.getByTestId('input-last-name');
         this.emailInput = page.getByTestId('input-email');
@@ -53,11 +61,17 @@ export class FormsPage {
         this.cityInput = page.getByTestId('input-city');
         this.passwordInput = page.getByTestId('input-password');
         this.confirmPasswordInput = page.getByTestId('input-confirm-password');
+        this.seleniumCheckbox = page.getByTestId('checkbox-interest-selenium');
+        this.playwrightCheckbox = page.getByTestId('checkbox-interest-playwright');
+        this.cypressCheckbox = page.getByTestId('checkbox-interest-cypress');
+        this.appiumCheckbox = page.getByTestId('checkbox-interest-appium');
+        this.jestCheckbox = page.getByTestId('checkbox-interest-jest');
         this.termsCheckbox = page.getByTestId('checkbox-terms');
         this.submitFormButton = page.getByTestId('submit-form-btn');
         this.resetFormButton = page.getByTestId('reset-form-btn');
         this.formSuccessMessage = page.getByTestId('form-success-msg');
         this.formSubmittedName = page.getByTestId('submitted-name');
+        this.fillAgainButton = page.getByTestId('reset-form-btn');
         this.firstNameError = page.getByTestId('error-first-name');
         this.lastNameError = page.getByTestId('error-last-name');
         this.emailError = page.getByTestId('error-email');
@@ -72,7 +86,7 @@ export class FormsPage {
     }
 
     async open() {
-        await this.page.goto('/practice/forms');
+        return await this.page.goto('/practice/forms');
     }
 
     async fillPersonalDetails(data: {
@@ -141,6 +155,26 @@ export class FormsPage {
         await this.passwordInput.fill(password);
     }
 
+    async checkSeleniumInterests() {
+        await this.seleniumCheckbox.check();
+    }
+
+    async checkPlaywrightInterests() {
+        await this.playwrightCheckbox.check();
+    }
+
+    async checkCypressInterests() {
+        await this.cypressCheckbox.check();
+    }
+
+    async checkAppiumInterests() {
+        await this.appiumCheckbox.check();
+    }
+
+    async checkJestInterests() {
+        await this.jestCheckbox.check();
+    }
+
     async acceptTerms() {
         await this.termsCheckbox.check();
     }
@@ -151,5 +185,9 @@ export class FormsPage {
 
     async resetForm() {
         await this.resetFormButton.click();
+    }
+
+    async fillAgainForm() {
+        await this.fillAgainButton.click();
     }
 }

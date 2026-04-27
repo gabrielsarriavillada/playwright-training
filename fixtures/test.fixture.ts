@@ -4,7 +4,7 @@ import { FormsPage } from '../pages/FormsPage';
 
 type Pages = {
     inputFieldsPage: InputFieldsPage;
-    formsPage: FormsPage
+    formsPage: FormsPage;
 };
 
 export const test = base.extend<Pages>({

@@ -1,9 +1,21 @@
 import { test, expect } from '@playwright/test';
 import { FormsPage } from '../pages/FormsPage';
 
+let consoleErrors: string[];
+
 test.beforeEach(async ({ page }) => {
+    consoleErrors = [];
+
+    page.on('console', (msg) => {
+        if (msg.type() === 'error') {
+            consoleErrors.push(msg.text());
+        }
+    });
+
     const formsPage = new FormsPage(page);
-    await formsPage.open();
+    const response = await formsPage.open();
+
+    expect(response?.status()).toBe(200);
 });
 
 test('Fill all fields with valid data and submit successfully', async({page}) => {
@@ -171,4 +183,80 @@ test('Verify country dropdown selection', async({page}) => {
     await formsPage.selectCountry(country);
 
     await expect(formsPage.countryDropdown).toHaveText(country);
+});
+
+test('Verify multiple interest checkboxes can be selected', async({page}) => {
+    const formsPage = new FormsPage(page);
+
+    await formsPage.checkSeleniumInterests();
+    await formsPage.checkPlaywrightInterests();
+
+    await expect(formsPage.seleniumCheckbox).toBeChecked();
+    await expect(formsPage.playwrightCheckbox).toBeChecked();
+    await expect(formsPage.cypressCheckbox).not.toBeChecked();
+    await expect(formsPage.appiumCheckbox).not.toBeChecked();
+    await expect(formsPage.jestCheckbox).not.toBeChecked();
+});
+
+test('Verify form fields retain values after validation failure', async({page}) => {
+    const formsPage = new FormsPage(page);
+    const firstName = 'John';
+    const email = 'john@example.com';
+
+    await formsPage.fillFirstName(firstName);
+
+    await formsPage.fillEmail(email);
+
+    await formsPage.submitForm();
+
+    await expect(formsPage.firstNameInput).toHaveValue(firstName);
+    await expect(formsPage.emailInput).toHaveValue(email);
+});
+
+test('Verify Fill Again button returns to empty form from success state', async({page}) => {
+    const formsPage = new FormsPage(page);
+
+    await formsPage.fillPersonalDetails({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john@example.com',
+        phone: '9876543210',
+        dob: '1990-05-21',
+        gender: 'male',
+    });
+
+    await formsPage.fillAddress({
+        country: 'India',
+        city: 'Mumbai',
+    });
+
+    await formsPage.fillAccountDetails('pass123');
+
+    await formsPage.acceptTerms();
+
+    await formsPage.submitForm();
+
+    await formsPage.fillAgainForm();
+
+    await expect(formsPage.registrationForm).toBeVisible();
+
+    await expect(formsPage.firstNameInput).toHaveValue('');
+    await expect(formsPage.lastNameInput).toHaveValue('');
+    await expect(formsPage.emailInput).toHaveValue('');
+    await expect(formsPage.phoneInput).toHaveValue('');
+    await expect(formsPage.dobInput).toHaveValue('');
+    await expect(formsPage.countryDropdown).toHaveText('Select country');
+    await expect(formsPage.cityInput).toHaveValue('');
+    await expect(formsPage.passwordInput).toHaveValue('');
+    await expect(formsPage.confirmPasswordInput).toHaveValue('');
+});
+
+test('Verify form page loads without errors', async({page}) => {
+    const formsPage = new FormsPage(page);
+
+    expect(consoleErrors).toEqual([]);
+
+    await expect(formsPage.registrationForm).toBeVisible();
+    await expect(formsPage.submitFormButton).toBeVisible();
+    await expect(formsPage.resetFormButton).toBeVisible();
 });

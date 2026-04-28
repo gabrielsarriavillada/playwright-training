@@ -1,7 +1,7 @@
 import { APIRequestContext } from "@playwright/test";
 import { API_BASE_URL } from "../playwright.config";
 
-export class PostApi {
+export class PostsApi {
     constructor(private request: APIRequestContext) {}
 
     async getPosts() {

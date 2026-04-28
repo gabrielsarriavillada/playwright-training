@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { PostApi  } from '../../api/PostsApi';
+import { PostsApi  } from '../../api/PostsApi';
 
 test.describe('Posts API', () => {
     test('should return a list of posts', async ({ request }) => {
-        const postApi = new PostApi(request);
+        const postApi = new PostsApi(request);
 
         const response = await postApi.getPosts();
 
@@ -18,7 +18,7 @@ test.describe('Posts API', () => {
     });
 
     test('should return a single post', async ({ request }) => {
-        const postApi = new PostApi(request);
+        const postApi = new PostsApi(request);
 
         const response = await postApi.getPost(1);
 
@@ -32,7 +32,7 @@ test.describe('Posts API', () => {
     });
 
     test('should return 404 for non-existing post', async ({ request }) => {
-        const postApi = new PostApi(request);
+        const postApi = new PostsApi(request);
 
         const response = await postApi.getPost(999999);
 
@@ -40,7 +40,7 @@ test.describe('Posts API', () => {
     });
 
     test('should create a post', async ({ request }) => {
-        const postApi = new PostApi(request);
+        const postApi = new PostsApi(request);
 
         const response = await postApi.createPost({
             title: 'Playwright API testing',

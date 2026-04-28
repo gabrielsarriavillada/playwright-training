@@ -1,15 +1,14 @@
 import { APIRequestContext } from "@playwright/test";
-import { API_BASE_URL } from "../playwright.config";
 
 export class PostsApi {
     constructor(private request: APIRequestContext) {}
 
     async getPosts() {
-        return this.request.get(`${API_BASE_URL}/posts`);
+        return this.request.get('/posts');
     }
 
     async getPost(id: number) {
-        return this.request.get(`${API_BASE_URL}/posts/${id}`);
+        return this.request.get(`/posts/${id}`);
     }
 
     async createPost(data: {
@@ -17,6 +16,6 @@ export class PostsApi {
         body: string;
         userId: number;
     }) {
-        return this.request.post(`${API_BASE_URL}/posts`, { data });
+        return this.request.post('/posts', { data });
     }
 }

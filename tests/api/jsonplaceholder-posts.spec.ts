@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Users API', () => {
+test.describe('Posts API', () => {
     test('should return a list of posts', async ({ request }) => {
-        const reponse = await request.get('https://jsonplaceholder.typicode.com/posts');
+        const response = await request.get('https://jsonplaceholder.typicode.com/posts');
 
-        expect(reponse.status()).toBe(200);
+        expect(response.status()).toBe(200);
 
-        const body = await reponse.json();
+        const body = await response.json();
 
         expect(body.length).toBeGreaterThan(0);
         expect(body[0]).toHaveProperty('id');
@@ -15,20 +15,22 @@ test.describe('Users API', () => {
     });
 
     test('should return a single post', async ({ request }) => {
-        const reponse = await request.get('https://jsonplaceholder.typicode.com/posts/1');
+        const response = await request.get('https://jsonplaceholder.typicode.com/posts/1');
 
-        const body = await reponse.json();
+        await expect(response).toBeOK();
+
+        const body = await response.json();
 
         expect(body.id).toBe(1);
         expect(body.userId).toBeTruthy();
         expect(body.title).toBeTruthy();
-    })
+    });
 
     test('should return 404 for non-existing post', async ({ request }) => {
-        const reponse = await request.get('https://jsonplaceholder.typicode.com/posts/999999');
+        const response = await request.get('https://jsonplaceholder.typicode.com/posts/999999');
 
-        expect(reponse.status()).toBe(404);
-    })
+        expect(response.status()).toBe(404);
+    });
 
     test('should create a post', async ({ request }) => {
         const response = await request.post('https://jsonplaceholder.typicode.com/posts', {

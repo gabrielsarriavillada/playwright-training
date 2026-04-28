@@ -13,46 +13,82 @@ This project demonstrates:
 - Clean test design and separation of concerns
 - Real-world input field validations and UI behaviors
 - Foundations for scalable test automation frameworks
+- Custom Playwright fixtures
+- API testing with Playwright
+- Multi-project configuration (UI + API + environments)
+- CI integration
+- Preparation for API + UI integration testing
 
 ---
 
-## Testing Approach
+## Test Targets
 
-This project includes two levels of test maturity:
+### QA Playground (UI)
+Used for UI automation practice:
+- Input field interactions
+- Form filling
+- Validation scenarios
+- Disabled and readonly behavior
+- Keyboard interactions
+- Console error monitoring
+Base URL:
+```
+https://www.qaplayground.com
+```
 
-### Beginner Tests
-- Direct use of `page`
-- Locators inside test files
-- Repeated setup per test
+### JSONPlaceholder (API)
+Used for API testing practice:
+- Get all posts
+- Get a single post
+- Validate 404 responses
+- Create a post
+Base URL:
+```
+https://jsonplaceholder.typicode.com
+```
 
-### Advanced Tests
-- Page Object Model (POM)
-- Centralized locators
-- Reusable actions
-- `beforeEach` setup
-
-This demonstrates the evolution from basic Playwright usage to a more scalable and maintainable test structure.
+### Conduit / RealWorld (Planned)
+The project is prepared for integration with Conduit (RealWorld) to support:
+- UI login
+- API login
+- Article creation
+- API-driven test setup
+- UI validation of backend data
+- Cleanup via API
 
 ---
 
 ## Project Structure
 
 ```text
-.
-├── pages/                     # Page Object Models
+playwright-training/
+├── api/
+│   └── PostsApi.ts
+├── fixtures/
+│   └── test.fixture.ts
+├── pages/
+│   ├── FormsPage.ts
 │   └── InputFieldsPage.ts
-│
-├── tests/                     # Test specs
-│   ├── input-fields-beginner.spec.ts
-│   └── input-fields-advance.spec.ts
-│
-├── .github/workflows/         # CI pipeline (GitHub Actions)
-│   └── playwright.yml
-│
-├── playwright.config.ts       # Playwright configuration
+├── tests/
+│   ├── api/
+│   │   └── jsonplaceholder-posts.spec.ts
+│   ├── forms.spec.ts
+│   ├── input-fields-advance.spec.ts
+│   └── input-fields-beginner.spec.ts
+├── playwright.config.ts
 ├── package.json
 └── README.md
 ```
+
+---
+
+## Playwright Projects Configuration
+
+The project uses multi-project configuration to separate environments:
+- QA Playground (UI tests, multi-browser)
+- JSONPlaceholder (API tests, no browser needed)
+- Conduit (prepared for UI + API)
+This avoids conflicts between different base URLs and enables scalable test execution.
 
 ---
 
@@ -71,15 +107,15 @@ npm run install:browsers
 ## Running Tests
 
 ```bash
-npm test                # run all tests
-npm run test:headed     # run with browser UI
-npm run test:ui         # Playwright UI mode
-npm run test:api        # run API tests
-npm run test:debug      # run on debug mode
-npm run test:chromium   # run on chromium browser
-npm run test:firefox    # run on firefox browser
-npm run test:webkit     # run on webkit browser
-npm run test:smoke      # run smoke test suite
+npm test                                # run all tests
+npm run test:headed                     # run with browser UI
+npm run test:ui                         # Playwright UI mode
+npm run test:api                        # run API tests
+npm run test:debug                      # run on debug mode
+npm run test:qa-playground-chromium     # run UI tests for qa-playground on chromium
+npm run test:qa-playground-firefox      # run UI tests for qa-playground on firefox
+npm run test:qa-playground-webkit       # run UI tests for qa-playground on webkit
+npm run test:smoke                      # run smoke test suite
 ```
 
 ---
@@ -100,28 +136,27 @@ GitHub Actions workflow runs tests on push and pull requests.
 
 ---
 
-## Covered Scenarios
-
-- Input validation
-- Placeholder behavior
-- Keyboard navigation
-- Disabled and readonly fields
-
----
-
 ## Design Principles
 
-- Separation of concerns
-- Reusable page objects
-- Clean and readable tests
+- Tests focus on behavior, not implementation details
+- No hardcoded URLs in tests or page objects
+- Use fixtures for dependency injection (POM)
+- Keep page objects simple and readable
+- Use API clients for reusable request logic
+- Separate UI and API concerns
+- Keep configuration environment-driven
+- Ensure tests are CI-ready
 
 ---
 
-## Improvements
+## Next Steps
 
-- Add fixtures
-- Introduce test data layer
-- Configure baseURL
+- Add Conduit UI tests
+- Add Conduit API client
+- Implement API + UI integration tests
+- Add authentication/session handling
+- Improve test data management
+- Add AI-assisted QA examples
 
 ---
 
@@ -129,5 +164,10 @@ GitHub Actions workflow runs tests on push and pull requests.
 
 - Playwright
 - TypeScript
-- Node.js
+- Page Object Model (POM)
+- Custom fixtures
+- API testing (`request`)
+- Multi-project Playwright configuration
 - GitHub Actions
+- ESLint + Prettier
+- dotenv

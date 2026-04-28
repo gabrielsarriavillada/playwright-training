@@ -74,6 +74,7 @@ npm run install:browsers
 npm test                # run all tests
 npm run test:headed     # run with browser UI
 npm run test:ui         # Playwright UI mode
+npm run test:api        # run API tests
 npm run test:debug      # run on debug mode
 npm run test:chromium   # run on chromium browser
 npm run test:firefox    # run on firefox browser

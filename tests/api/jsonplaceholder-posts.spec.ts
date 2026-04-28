@@ -1,8 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { PostApi  } from '../../api/PostsApi';
 
 test.describe('Posts API', () => {
     test('should return a list of posts', async ({ request }) => {
-        const response = await request.get('https://jsonplaceholder.typicode.com/posts');
+        const postApi = new PostApi(request);
+
+        const response = await postApi.getPosts();
 
         expect(response.status()).toBe(200);
 
@@ -15,7 +18,9 @@ test.describe('Posts API', () => {
     });
 
     test('should return a single post', async ({ request }) => {
-        const response = await request.get('https://jsonplaceholder.typicode.com/posts/1');
+        const postApi = new PostApi(request);
+
+        const response = await postApi.getPost(1);
 
         await expect(response).toBeOK();
 
@@ -27,18 +32,20 @@ test.describe('Posts API', () => {
     });
 
     test('should return 404 for non-existing post', async ({ request }) => {
-        const response = await request.get('https://jsonplaceholder.typicode.com/posts/999999');
+        const postApi = new PostApi(request);
+
+        const response = await postApi.getPost(999999);
 
         expect(response.status()).toBe(404);
     });
 
     test('should create a post', async ({ request }) => {
-        const response = await request.post('https://jsonplaceholder.typicode.com/posts', {
-            data: {
-                title: 'Playwright API testing',
-                body: 'Learning API testing with Playwright',
-                userId: 1,
-            }
+        const postApi = new PostApi(request);
+
+        const response = await postApi.createPost({
+            title: 'Playwright API testing',
+            body: 'Learning API testing with Playwright',
+            userId: 1,
         });
 
         expect(response.status()).toBe(201);

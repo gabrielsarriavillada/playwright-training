@@ -82,6 +82,14 @@ export default defineConfig({
       },
       testMatch: /conduit\/ui/,
     },
+    // Conduit API
+    {
+      name: 'conduit-api',
+      use: {
+        baseURL: process.env.CONDUIT_API_BASE_URL || 'https://api.realworld.show/api/',
+      },
+      testMatch: /conduit\/api/,
+    },
     // Jsonplaceholder API
     {
       name: 'jsonplaceholder-api',

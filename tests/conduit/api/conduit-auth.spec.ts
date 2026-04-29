@@ -1,34 +1,38 @@
-import { test, expect } from '@playwright/test';
-import { ConduitApi } from '../../../api/ConductApi';
+import { test, expect } from "@playwright/test";
+import { ConduitApi } from "../../../api/ConductApi";
 
-test.describe('Conduit Auth API', () => {
-    test('should register a new user and ger current user', async ({ request }) => {
-        console.log('BASE URL:', test.info().project.use.baseURL);
-        const conduitApi = new ConduitApi(request);
+test.describe("Conduit Auth API", () => {
+  test("should register a new user and ger current user", async ({
+    request,
+  }) => {
+    console.log("BASE URL:", test.info().project.use.baseURL);
+    const conduitApi = new ConduitApi(request);
 
-        const timestamp = Date.now();
-        const user = {
-            username: `gsv_${timestamp}`,
-            email: `gsv_${timestamp}@test.com`,
-            password: `Testing1234!`
-        };
+    const timestamp = Date.now();
+    const user = {
+      username: `gsv_${timestamp}`,
+      email: `gsv_${timestamp}@test.com`,
+      password: `Testing1234!`,
+    };
 
-        const registerResponse = await conduitApi.registerUser(user);
-        await expect(registerResponse).toBeOK();
+    const registerResponse = await conduitApi.registerUser(user);
+    await expect(registerResponse).toBeOK();
 
-        const registerBody = await registerResponse.json();
+    const registerBody = await registerResponse.json();
 
-        expect(registerBody.user.username).toBe(user.username);
-        expect(registerBody.user.email).toBe(user.email);
-        expect(registerBody.user.token).toBeTruthy();
+    expect(registerBody.user.username).toBe(user.username);
+    expect(registerBody.user.email).toBe(user.email);
+    expect(registerBody.user.token).toBeTruthy();
 
-        const currentUserResponse = await conduitApi.getCurrentUser(registerBody.user.token);
+    const currentUserResponse = await conduitApi.getCurrentUser(
+      registerBody.user.token,
+    );
 
-        await expect(currentUserResponse).toBeOK();
+    await expect(currentUserResponse).toBeOK();
 
-        const currentUserBody = await currentUserResponse.json();
+    const currentUserBody = await currentUserResponse.json();
 
-        expect(currentUserBody.user.email).toBe(user.email);
-        expect(currentUserBody.user.username).toBe(user.username);
-    });
+    expect(currentUserBody.user.email).toBe(user.email);
+    expect(currentUserBody.user.username).toBe(user.username);
+  });
 });

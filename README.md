@@ -24,31 +24,39 @@ This project demonstrates:
 ## Test Targets
 
 ### QA Playground (UI)
+
 Used for UI automation practice:
+
 - Input field interactions
 - Form filling
 - Validation scenarios
 - Disabled and readonly behavior
 - Keyboard interactions
 - Console error monitoring
-Base URL:
+  Base URL:
+
 ```
 https://www.qaplayground.com
 ```
 
 ### JSONPlaceholder (API)
+
 Used for API testing practice:
+
 - Get all posts
 - Get a single post
 - Validate 404 responses
 - Create a post
-Base URL:
+  Base URL:
+
 ```
 https://jsonplaceholder.typicode.com
 ```
 
 ### Conduit / RealWorld (Planned)
+
 The project is prepared for integration with Conduit (RealWorld) to support:
+
 - UI login
 - API login
 - Article creation
@@ -85,10 +93,11 @@ playwright-training/
 ## Playwright Projects Configuration
 
 The project uses multi-project configuration to separate environments:
+
 - QA Playground (UI tests, multi-browser)
 - JSONPlaceholder (API tests, no browser needed)
 - Conduit (prepared for UI + API)
-This avoids conflicts between different base URLs and enables scalable test execution.
+  This avoids conflicts between different base URLs and enables scalable test execution.
 
 ---
 
@@ -100,6 +109,7 @@ cd playwright-training
 npm ci
 npm run install:browsers
 ```
+
 > Requires Node.js 18+
 
 ---

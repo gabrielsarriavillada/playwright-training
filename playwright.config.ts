@@ -1,5 +1,5 @@
-import { defineConfig, devices } from '@playwright/test';
-import * as dotenv from 'dotenv';
+import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
@@ -7,7 +7,7 @@ dotenv.config();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -17,87 +17,89 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   projects: [
     // QA Playground
     {
-      name: 'qa-playground-chromium',
+      name: "qa-playground-chromium",
       use: {
-        ...devices['Desktop Chrome'],
-        baseURL: 'https://www.qaplayground.com',
+        ...devices["Desktop Chrome"],
+        baseURL: "https://www.qaplayground.com",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: 'on-first-retry',
+        trace: "on-first-retry",
       },
       testMatch: /qa-playground/,
     },
     {
-      name: 'qa-playground-firefox',
+      name: "qa-playground-firefox",
       use: {
-        ...devices['Desktop Firefox'],
-        baseURL: 'https://www.qaplayground.com',
+        ...devices["Desktop Firefox"],
+        baseURL: "https://www.qaplayground.com",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: 'on-first-retry',
+        trace: "on-first-retry",
       },
       testMatch: /qa-playground/,
     },
     {
-      name: 'qa-playground-webkit',
+      name: "qa-playground-webkit",
       use: {
-        ...devices['Desktop Safari'],
-        baseURL: 'https://www.qaplayground.com',
+        ...devices["Desktop Safari"],
+        baseURL: "https://www.qaplayground.com",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: 'on-first-retry',
+        trace: "on-first-retry",
       },
       testMatch: /qa-playground/,
     },
     // Conduit UI
     {
-      name: 'conduit-ui-chromium',
+      name: "conduit-ui-chromium",
       use: {
-        ...devices['Desktop Chrome'],
-        baseURL: 'https://demo.realworld.io',
+        ...devices["Desktop Chrome"],
+        baseURL: "https://demo.realworld.io",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: 'on-first-retry',
+        trace: "on-first-retry",
       },
       testMatch: /conduit\/ui/,
     },
     {
-      name: 'conduit-ui-firefox',
+      name: "conduit-ui-firefox",
       use: {
-        ...devices['Desktop Firefox'],
-        baseURL: 'https://demo.realworld.io',
+        ...devices["Desktop Firefox"],
+        baseURL: "https://demo.realworld.io",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: 'on-first-retry',
+        trace: "on-first-retry",
       },
       testMatch: /conduit\/ui/,
     },
     {
-      name: 'conduit-ui-webkit',
+      name: "conduit-ui-webkit",
       use: {
-        ...devices['Desktop Safari'],
-        baseURL: 'https://demo.realworld.io',
+        ...devices["Desktop Safari"],
+        baseURL: "https://demo.realworld.io",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: 'on-first-retry',
+        trace: "on-first-retry",
       },
       testMatch: /conduit\/ui/,
     },
     // Conduit API
     {
-      name: 'conduit-api',
+      name: "conduit-api",
       use: {
-        baseURL: process.env.CONDUIT_API_BASE_URL || 'https://api.realworld.show/api/',
+        baseURL:
+          process.env.CONDUIT_API_BASE_URL || "https://api.realworld.show/api/",
       },
       testMatch: /conduit\/api/,
     },
     // Jsonplaceholder API
     {
-      name: 'jsonplaceholder-api',
+      name: "jsonplaceholder-api",
       use: {
-        baseURL: process.env.API_BASE_URL || 'https://jsonplaceholder.typicode.com',
+        baseURL:
+          process.env.API_BASE_URL || "https://jsonplaceholder.typicode.com",
       },
       testMatch: /jsonplaceholder/,
-    }
+    },
   ],
 
   /* Run your local dev server before starting the tests */

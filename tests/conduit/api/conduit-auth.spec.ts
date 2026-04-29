@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { ConduitApi } from "../../../api/ConductApi";
+import { ConduitApi } from "../../../api/ConduitApi";
 
 test.describe("Conduit Auth API", () => {
   test("should register a new user and ger current user", async ({

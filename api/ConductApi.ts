@@ -37,4 +37,21 @@ export class ConduitApi {
       },
     });
   }
+
+  async createUserAndGetToken() {
+    const timestamp = Date.now();
+    const user = {
+        username: `gsv_${timestamp}`,
+        email: `gsv_${timestamp}@test.com`,
+        password: `Testing1234!`,
+    };
+
+    const response = await this.registerUser(user);
+    const body = await response.json();
+
+    return {
+        user,
+        token: body.user.token,
+    };
+  }
 }

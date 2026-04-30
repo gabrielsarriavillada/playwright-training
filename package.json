@@ -15,6 +15,7 @@
     "test:qa-playground-webkit": "playwright test --project=qa-playground-webkit",
     "test:jsonplaceholder-api": "playwright test --project=jsonplaceholder-api",
     "test:conduit-api": "playwright test --project=conduit-api",
+    "test:conduit-integration-chromium": "playwright test --project=conduit-integration-chromium",
     "test:smoke": "playwright test --grep @smoke",
     "test:report": "playwright show-report",
     "install:browsers": "playwright install --with-deps",

@@ -56,7 +56,7 @@ export default defineConfig({
       name: "conduit-ui-chromium",
       use: {
         ...devices["Desktop Chrome"],
-        baseURL: "https://demo.realworld.io",
+        baseURL: "https://demo.realworld.world",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: "on-first-retry",
       },
@@ -66,7 +66,7 @@ export default defineConfig({
       name: "conduit-ui-firefox",
       use: {
         ...devices["Desktop Firefox"],
-        baseURL: "https://demo.realworld.io",
+        baseURL: "https://demo.realworld.world",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: "on-first-retry",
       },
@@ -76,7 +76,7 @@ export default defineConfig({
       name: "conduit-ui-webkit",
       use: {
         ...devices["Desktop Safari"],
-        baseURL: "https://demo.realworld.io",
+        baseURL: "https://demo.realworld.world",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: "on-first-retry",
       },
@@ -90,6 +90,16 @@ export default defineConfig({
           process.env.CONDUIT_API_BASE_URL || "https://api.realworld.show/api/",
       },
       testMatch: /conduit\/api/,
+    },
+    // Conduit integration
+    {
+      name: "conduit-integration-chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL:
+          process.env.CONDUIT_UI_BASE_URL || "https://demo.realworld.world"
+      },
+      testMatch: /conduit\/integration/,
     },
     // Jsonplaceholder API
     {

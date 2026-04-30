@@ -1,8 +1,6 @@
 import type { Page, Locator } from "@playwright/test";
 
 export class InputFieldsPage {
-  readonly page: Page;
-
   readonly movieNameInput: Locator;
   readonly appendTextInput: Locator;
   readonly verifyTextInput: Locator;
@@ -10,8 +8,7 @@ export class InputFieldsPage {
   readonly disabledInput: Locator;
   readonly readonlyInput: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
+  constructor(private page: Page) {
     this.movieNameInput = page.getByTestId("input-movie-name");
     this.appendTextInput = page.getByTestId("input-append-text");
     this.verifyTextInput = page.getByTestId("input-verify-text");

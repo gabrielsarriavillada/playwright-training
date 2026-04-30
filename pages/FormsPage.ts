@@ -3,8 +3,6 @@ import type { Page, Locator } from "@playwright/test";
 type Gender = "male" | "female" | "other";
 
 export class FormsPage {
-  readonly page: Page;
-
   // Form field locators
   readonly registrationForm: Locator;
   readonly firstNameInput: Locator;
@@ -46,8 +44,7 @@ export class FormsPage {
   readonly confirmPasswordError: Locator;
   readonly termsError: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
+  constructor(private page: Page) {
     this.registrationForm = page.getByTestId("user-registration-form");
     this.firstNameInput = page.getByTestId("input-first-name");
     this.lastNameInput = page.getByTestId("input-last-name");

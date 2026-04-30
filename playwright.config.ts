@@ -97,7 +97,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         baseURL:
-          process.env.CONDUIT_UI_BASE_URL || "https://demo.realworld.world"
+          process.env.CONDUIT_UI_BASE_URL || "https://demo.realworld.world",
       },
       testMatch: /conduit\/integration/,
     },

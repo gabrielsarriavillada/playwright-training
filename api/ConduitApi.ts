@@ -1,4 +1,4 @@
-import { APIRequestContext } from "@playwright/test";
+import type { APIRequestContext } from "@playwright/test";
 
 type RegisterUserData = {
   username: string;
@@ -12,26 +12,25 @@ type LoginUserData = {
 };
 
 export class ConduitApi {
-  constructor(private request: APIRequestContext) {}
+  constructor(
+    private request: APIRequestContext,
+    private baseURL: string
+  ) {}
 
   async registerUser(data: RegisterUserData) {
-    return this.request.post("users", {
-      data: {
-        user: data,
-      },
+    return this.request.post(`${this.baseURL}/users`, {
+      data: { user: data },
     });
   }
 
   async loginUser(data: LoginUserData) {
     return this.request.post("users/login", {
-      data: {
-        user: data,
-      },
+      data: { user: data },
     });
   }
 
   async getCurrentUser(token: string) {
-    return this.request.get("user", {
+    return this.request.get(`${this.baseURL}/user`, {
       headers: {
         Authorization: `Token ${token}`,
       },
@@ -47,7 +46,20 @@ export class ConduitApi {
     };
 
     const response = await this.registerUser(user);
+
+    if (!response.ok()) {
+      throw new Error(
+        `User registration failed: ${response.status()} ${await response.text()}`,
+      );
+    }
+
     const body = await response.json();
+
+    if (!body.user?.token) {
+      throw new Error(`Unexpected registration response: ${JSON.stringify(body)}`);
+    }
+
+    console.log(`USER CREATED ${user.username} with email ${user.email}.`);
 
     return {
         user,

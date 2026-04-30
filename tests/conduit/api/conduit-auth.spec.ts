@@ -6,7 +6,7 @@ test.describe("Conduit Auth API", () => {
     request,
   }) => {
     console.log("BASE URL:", test.info().project.use.baseURL);
-    const conduitApi = new ConduitApi(request);
+    const conduitApi = new ConduitApi(request, process.env.CONDUIT_API_BASE_URL || "https://api.realworld.show/api");
 
     const timestamp = Date.now();
     const user = {
